@@ -5,7 +5,7 @@ import functools
 class Helper:
 
     RESUME_FILE = 'resume.yaml'
-    PRINT_WIDTH = 20
+    PRINT_WIDTH = 2
 
     @staticmethod
     def load_resume():
@@ -53,25 +53,27 @@ class Helper:
 
     def print_resource(self, data: dict, depth=0, prefix=''):
 
-        indent = ' '*Helper.PRINT_WIDTH*depth
-        if depth and prefix:
-            indent = indent[:len(indent)-1] + prefix
+        def get_indent():
+            indent = ' '*Helper.PRINT_WIDTH*depth
+            if depth and prefix:
+                indent = indent[:len(indent)-2] + f'{prefix} '
+            return indent
 
         if isinstance(data, dict):
             for k, v in data.items():
-                print(f'{indent}{f"{k}: ":<{Helper.PRINT_WIDTH}}', end='')
+                print(f'{get_indent()}{f"{k}: ":<{Helper.PRINT_WIDTH}}', end='')
                 if isinstance(v, (tuple, list, dict)):
                     print()
                     self.print_resource(v, depth + 1)
                 else:
                     print(f'{v}')
-                indent = indent[: len(indent)-1] + ' '
+                prefix = ''
 
         elif isinstance(data, (tuple, list)):
             for x in data:
-                self.print_resource(x, depth, prefix='-')
+                self.print_resource(x, depth + 1, prefix='-')
         else:
-            print(f'{indent}{data:<{Helper.PRINT_WIDTH}}')
+            print(f'{get_indent()}{data:<{Helper.PRINT_WIDTH}}')
 
 
 helper = Helper()

@@ -1,6 +1,8 @@
 import asyncio
 import sys
 import cli
+import yaml
+import json
 from io import StringIO
 from websockets import serve
 
@@ -16,7 +18,12 @@ def get_cli_output(message):
         command = [x.strip() for i, x in enumerate(message.split(' ')) if x != 'mbnatafgi' and i != 0]
         cli.mbnatafgi(command)
     except SystemExit as e:
-        return output.getvalue() or error.getvalue()
+        try:
+            if e.code or '--help' in command:
+                raise Exception()
+            return json.dumps(yaml.safe_load(output.getvalue() or error.getvalue()), )
+        except Exception as e:
+            return output.getvalue() or error.getvalue()
     except Exception as e:
         return 'Something went wrong :('
     finally:
