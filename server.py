@@ -39,7 +39,7 @@ async def connect(websocket, path):
         await websocket.send(output)
 
 
-start_server = serve(connect, 'localhost', 8000)
+start_server = serve(connect, '0.0.0.0', 8000)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
