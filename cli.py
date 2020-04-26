@@ -84,29 +84,30 @@ def mbnatafgi():
     pass
 
 
-@mbnatafgi.group()
+@mbnatafgi.group(help='Show info about me; the whole purpose of this CLI!')
 def get():
     pass
 
 
-@get.command(name='all')
+@get.command(name='all', help='Show all info about me in one shot; in case you\'re in a hurry! ')
 def _all():
     helper.print_resource(helper.get_resource())
 
 
-@get.command()
+@get.command(help='Show info about my contact; in case you want to contact me!')
 @click.option('-r', '--resource', type=click.Choice(['name', 'alias', 'title', 'nationality', 'languages', 'address']))
 def contact(resource):
     helper.print_resource(helper.get_resource('contact', resource))
 
 
-@get.command()
+@get.command(help='Show info about my skills; in case you\'re a tech enthusiast!')
 @click.option('-r', '--resource', type=click.Choice(['languages', 'frameworks', 'databases', 'vcs', 'devops']))
 def skills(resource):
     helper.print_resource(helper.get_resource('skills', resource))
 
 
-@get.command(cls=Helper.deps_command({'eid': ('resource', ['affiliation','location','start_date','end_date','degree',
+@get.command(help='Show info about my education; in case you value the intellect!',
+             cls=Helper.deps_command({'eid': ('resource', ['affiliation','location','start_date','end_date','degree',
                                                      'cumulative_avg','major_avg','awards','publications','coursework',
                                                      'projects', 'projects.name', 'projects.link', 'projects.stack']),
                                       'pid': ('resource', ['projects.name', 'projects.link', 'projects.stack'])}))
@@ -135,7 +136,8 @@ def education(resource, eid, pid):
     helper.print_resource(data)
 
 
-@get.command(cls=Helper.deps_command({'eid': ('resource', ['affiliation','location','start_date','end_date','position',
+@get.command(help='Show info about my experience; the typical thing!',
+             cls=Helper.deps_command({'eid': ('resource', ['affiliation','location','start_date','end_date','position',
                                                      'employment', 'tasks','tasks.name','tasks.type',
                                                      'tasks.link', 'tasks.stack', 'tasks.accomplishments']),
                                       'tid': ('resource', ['tasks.name','tasks.type','tasks.link', 'tasks.stack',
