@@ -1,0 +1,31 @@
+version: '3.3'
+services:
+  portfolio-be:
+    build:
+      context: .
+    image: mbnatafgi/portfolio:be
+    container_name: portfolio-be
+    ports:
+    - 8000:8000
+    restart: always
+  portfolio-nginx:
+    build:
+      context: ./nginx
+    image: mbnatafgi/portfolio:nginx
+    container_name: portfolio-nginx
+    ports:
+    - 80:80
+    - 443:443
+    volumes:
+      - portfolio-fe:/portfolio-fe
+      - portfolio-nginx:/portfolio-nginx
+    restart: always
+    depends_on:
+      - portfolio-be
+    env_file:
+      - ./variables.env
+volumes:
+  portfolio-fe:
+    external: true
+  portfolio-nginx:
+    external: true
