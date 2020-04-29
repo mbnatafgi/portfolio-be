@@ -6,6 +6,6 @@ ADD ./requirements.txt /app/requirements.txt
 
 RUN pip install -r requirements.txt
 
-ADD ./src /app/
+ADD ./src /app/src
 
-ENTRYPOINT ["python", "/app/server.py"]
+ENTRYPOINT ["python", "-m", "src"]
