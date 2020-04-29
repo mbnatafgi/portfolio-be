@@ -1,10 +1,11 @@
-import asyncio
 import sys
-import cli
+import os
 import yaml
 import json
+import asyncio
 from io import StringIO
 from websockets import serve
+from . import cli
 
 
 def get_cli_output(message):
@@ -12,7 +13,7 @@ def get_cli_output(message):
     stdout, stderr = sys.stdout, sys.stderr
     output, error = StringIO(), StringIO()
     sys.stdout, sys.stderr = output, error
-    sys.argv[0] = sys.argv[0].replace('server.py', 'mbnatafgi')
+    sys.argv[0] = sys.argv[0].replace(os.path.basename(sys.argv[0]), 'mbnatafgi')
 
     try:
         command = [x.strip() for i, x in enumerate(message.split(' ')) if x != 'mbnatafgi' and i != 0]
@@ -39,7 +40,11 @@ async def connect(websocket, path):
         await websocket.send(output)
 
 
-start_server = serve(connect, '0.0.0.0', 8000)
+def main():
+    start_server = serve(connect, '0.0.0.0', 8000)
+    asyncio.get_event_loop().run_until_complete(start_server)
+    asyncio.get_event_loop().run_forever()
 
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+
+if __name__ == '__main__':
+    main()

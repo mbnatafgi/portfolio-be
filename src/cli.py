@@ -1,10 +1,12 @@
 import click
 import yaml
 import functools
+import os
+
 
 class Helper:
 
-    RESUME_FILE = 'resume.yaml'
+    RESUME_FILE = f'{os.path.join(os.path.dirname(__file__), "resume.yaml")}'
     PRINT_WIDTH = 2
 
     @staticmethod
