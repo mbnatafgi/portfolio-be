@@ -1,7 +1,7 @@
 #!/bin/bash
 
 certbot certonly --nginx -n --agree-tos -vvv --keep --expand \
-  -d $DOMAIN,www.$DOMAIN \
+  -d $DOMAIN,www.$DOMAIN,jenkins.$DOMAIN \
   --email bilal.natafji@icloud.com \
   --logs-dir /portfolio-nginx/letsencrypt/logs \
   --config-dir /portfolio-nginx/letsencrypt/config

@@ -7,7 +7,8 @@ INSTALL_DOCKER_FILE="install_docker.sh"
 
 "$SCRIPTS_DIR/$INSTALL_DOCKER_FILE"
 
-sudo docker volume create portfolio-nginx > /dev/null 2>&1
-sudo docker volume create portfolio-fe > /dev/null 2>&1
+sudo docker network create portfolio
+sudo docker volume create portfolio-nginx
+sudo docker volume create portfolio-fe
 
-sudo docker-compose -f "$ROOT_DIR/$DOCKER_COMPOSE_FILE" up -d --build
+sudo docker-compose -f "$ROOT_DIR/$DOCKER_COMPOSE_FILE" up -d --build portfolio-be portfolio-nginx

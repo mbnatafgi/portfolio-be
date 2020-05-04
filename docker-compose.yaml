@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.5'
 services:
   portfolio-be:
     build:
@@ -24,8 +24,25 @@ services:
       - portfolio-be
     env_file:
       - ./variables.env
+  portfolio-jenkins:
+    build:
+      context: ./jenkins
+      dockerfile: Dockerfile
+    image: mbnatafgi/portfolio:jenkins
+    container_name: portfolio-jenkins
+    ports:
+      - 8080:8080
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
 volumes:
   portfolio-fe:
     external: true
   portfolio-nginx:
     external: true
+  jenkins_home:
+    external: false
+networks:
+  default:
+    external:
+      name: portfolio
