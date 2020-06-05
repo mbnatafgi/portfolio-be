@@ -3,6 +3,7 @@ import yaml
 import functools
 import os
 
+SPECIAL_STR = '%%%%SPECIAL%%%%'
 
 class Helper:
 
@@ -49,11 +50,13 @@ class Helper:
             data or self.resume
         )
 
-        data =  Helper.dict_exclude(data, *(exclude or []))
+        data = Helper.dict_exclude(data, *(exclude or []))
 
         return {resources[-1]: data} if len(resources) else data
 
     def print_resource(self, data: dict, depth=0, prefix=''):
+
+        print(SPECIAL_STR)
 
         def get_indent():
             indent = ' '*Helper.PRINT_WIDTH*depth
@@ -96,7 +99,7 @@ def _all():
     helper.print_resource(helper.get_resource())
 
 
-@get.command(help='Show info about my contact; in case you want to contact me!')
+@get.command(help='Show info about my contact; in case you want to reach me!')
 @click.option('-r', '--resource', type=click.Choice(['name', 'alias', 'title', 'nationality', 'languages', 'address']))
 def contact(resource):
     helper.print_resource(helper.get_resource('contact', resource))
@@ -116,17 +119,19 @@ def skills(resource):
 @click.option('-r', '--resource', type=click.Choice(['affiliation','location','start_date','end_date','degree',
                                                      'cumulative_avg','major_avg','awards','publications','coursework',
                                                      'projects', 'projects.name', 'projects.link', 'projects.stack']))
-@click.option('-i', '--eid')
-@click.option('-p', '--pid')
+@click.option('-i', '--eid', help='The ID of the education entry.')
+@click.option('-p', '--pid', help='The ID of the project in the education entry.')
 def education(resource, eid, pid):
 
-    exclude, data = [], helper.resume
+    exclude, data = [], {}
 
     if eid:
-        data['education'] = next(filter(lambda x: x['id'] == eid, data['education']), {})
+        data['education'] = next(filter(lambda x: x['id'] == eid, helper.resume['education']), {})
 
     if pid:
-        data['education']['projects'] = next(filter(lambda x: x['id'] == pid, data['education']['projects']), {})
+        data['education'] = {
+            'projects': next(filter(lambda x: x['id'] == pid, data['education']['projects']), {})
+        }
         resource = resource.split('.')
         data = helper.get_resource(*resource, data=data['education'])
     else:
@@ -147,17 +152,19 @@ def education(resource, eid, pid):
 @click.option('-r', '--resource', type=click.Choice(['affiliation','location','start_date','end_date','position',
                                                      'employment', 'tasks','tasks.name','tasks.type',
                                                      'tasks.link', 'tasks.stack', 'tasks.accomplishments']))
-@click.option('-i', '--eid')
-@click.option('-t', '--tid')
+@click.option('-i', '--eid', help='The id of the experience entry.')
+@click.option('-t', '--tid', help='The id of the task in the experience entry.')
 def experience(resource, eid, tid):
 
-    exclude, data = [], helper.resume
+    exclude, data = [], {}
 
     if eid:
-        data['experience'] = next(filter(lambda x: x['id'] == eid, data['experience']), {})
+        data['experience'] = next(filter(lambda x: x['id'] == eid, helper.resume['experience']), {})
 
     if tid:
-        data['experience']['tasks'] = next(filter(lambda x: x['id'] == tid, data['experience']['tasks']), {})
+        data['experience'] = {
+            'tasks': next(filter(lambda x: x['id'] == tid, data['experience']['tasks']), {})
+        }
         resource = resource.split('.')
         exclude += ['accomplishments']
         data = helper.get_resource(*resource, data=data['experience'], exclude=exclude)
@@ -165,7 +172,7 @@ def experience(resource, eid, tid):
         if resource is None:
             exclude.append('tasks')
         exclude.append('accomplishments')
-        data = helper.get_resource('experience', resource, data=data, exclude=exclude)#
+        data = helper.get_resource('experience', resource, data=data, exclude=exclude)
 
     helper.print_resource(data)
 

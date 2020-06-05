@@ -5,7 +5,7 @@ import json
 import asyncio
 from io import StringIO
 from websockets import serve
-from . import cli
+from .cli import mbnatafgi, SPECIAL_STR
 
 
 def get_cli_output(message):
@@ -17,14 +17,16 @@ def get_cli_output(message):
 
     try:
         command = [x.strip() for i, x in enumerate(message.split(' ')) if x != 'mbnatafgi' and i != 0]
-        cli.mbnatafgi(command)
+        mbnatafgi(command)
     except SystemExit as e:
         try:
-            if e.code or '--help' in command:
+            output = output.getvalue()
+            if e.code or '--help' in command or SPECIAL_STR not in output:
                 raise Exception()
-            return json.dumps(yaml.safe_load(output.getvalue() or error.getvalue()), )
+            output = output.replace(SPECIAL_STR, '')
+            return json.dumps(yaml.safe_load(output or error.getvalue()))
         except Exception as e:
-            return output.getvalue() or error.getvalue()
+            return output or error.getvalue()
     except Exception as e:
         return 'Something went wrong :('
     finally:
