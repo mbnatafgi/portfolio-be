@@ -1,12 +1,12 @@
 contact:
   name: "Mohamad Belal Natafgi"
-  alias: "Bilal"
+  alias: "Belal"
   title: "Devops & Backend Engineer"
   nationality: "Syrian"
   address:
-    location: "Lebanon"
-    phone: "+9613697106"
-    email: "mmn32@mail.aub.edu"
+    location: "Berlin, Germany"
+    phone: "+4915167103662"
+    email: "belal.natafgi@icloud.com"
   languages:
     - name: "Arabic"
       level: "Native"
