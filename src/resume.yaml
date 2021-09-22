@@ -1,5 +1,5 @@
 contact:
-  name: "Mohamad Belal Natafgi"
+  name: "Belal Natafgi"
   alias: "Belal"
   title: "Devops & Backend Engineer"
   nationality: "Syrian"
@@ -12,6 +12,8 @@ contact:
       level: "Native"
     - name: "English"
       level: "Fluent"
+    - name: "German"
+      level: "Beginner"
 skills:
   languages:
     - "Python"
@@ -97,6 +99,36 @@ education:
         stack:
           - "Assembly"
 experience:
+  - id: "ADJUST"
+    affiliation: "Adjust GmbH"
+    position: "Backend Developer"
+    location: "Berlin, Germany"
+    start_date: "October 2020"
+    end_date: "Present"
+    employment: "Full-time"
+    tasks:
+      - id: "CC-NS"
+        name: "Automate Ad Spend - Networks Service"
+        type: "Project"
+        link: "NDA"
+        stack:
+          - "Python"
+          - "asyncio"
+          - "RQ/Kafka"
+          - "PostgresQL"
+          - "Redis"
+          - "Ansible"
+          - "Github Actions"
+        accomplishments:
+          - "Implemented numerous heavily-concurrent async Python scripts to fetch ad spend data from various ad networks through their official reporting APIs."
+          - "Used creative thinking to retrieve missing data, such as reverse-engineering internal dashboard APIs that made such ad network integrations a possibility."
+          - "Optimized code collection strategies to overcome API rate limits and other throttling restrictions which enabled cost data collection for thousands of clients through millions of daily jobs."
+          - "Proposed and implemented a requeueing strategy for RQ jobs with the support of progress resumability which made scaling a breeze even for the most time consuming jobs."
+          - "Developed unit and integration tests to ensure 100% code coverage, reviewed hundreds of pull requests, and utilized CICD to achieve maximum code quality and reliability."
+          - "Implemented a Slack bot to automate monitoring tools’ daily report summary to the team."
+          - "Assisted the support team by investigating data discrepancies and applying fixes when required."
+          - "Participated in the hiring of Python developers through coffee-chat team interviews."
+          - "Introduced the backed’s architecture to newcomers which greatly helped in their onboarding."
   - id: "CGC"
     affiliation: "CloudGate Consulting DWC-LLC"
     position: "Backend Team Lead"
